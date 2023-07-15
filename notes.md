@@ -3,6 +3,7 @@
 ## Setup
 
 - Setting up dbt cloud to work with BigQuery is pretty tricky using their docs.  I found this [playlist](https://www.youtube.com/playlist?list=PL0QYlrC86xQlp-eOGzGllDxYese4Ki_6A) to be better.
+- I tried the quickstart but didn't really benefit much from it.  I found [this course](https://courses.getdbt.com/courses/take/fundamentals) and it was much better.
 
 ## Building your first model
 
