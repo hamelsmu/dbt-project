@@ -1,4 +1,4 @@
-#dbt notes
+# dbt Notes
 
 - Setting up dbt cloud to work with BigQuery is pretty tricky using their docs.  I found this [playlist](https://www.youtube.com/playlist?list=PL0QYlrC86xQlp-eOGzGllDxYese4Ki_6A) to be better.
 
@@ -83,7 +83,7 @@ If you want to create a table instead of a view, you have to edit the config blo
 
 
 ```sql
---models/dimcustomers.sql
+--models/dim_customers.sql
 {{
     config(
         materialized='table'
@@ -103,5 +103,5 @@ Now we can see that the view is now a table named `dim_customers`:
 
 ![](notes_imgs/2023-07-15-11-58-56.png)
 
-Everytime you run `dbt run` it runs all models in your project, if you only want to run a specific model you can run `dbt run --select dim_customers`.
+When you run `dbt run`, it runs all models in your project. If you only want to run a specific model, you can run `dbt run --select dim_customers`.
 
