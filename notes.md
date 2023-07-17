@@ -108,3 +108,67 @@ Now we can see that the view is now a table named `dim_customers`:
 
 When you run `dbt run`, it runs all models in your project. If you only want to run a specific model, you can run `dbt run --select dim_customers`.
 
+## Modularity
+
+We can break up the above SQL into separate files.  We can create a file called `models/stg_customers.sql` and paste the following SQL into it:
+
+```sql
+with customers as (
+
+    select
+        id as customer_id,
+        first_name,
+        last_name
+
+    from dbt-tutorial.jaffle_shop.customers
+)
+
+select * from customers
+```
+
+We can do the same thing with orders and create the file `models/stg_orders.sql`:
+
+```sql
+with orders as (
+
+    select
+        id as order_id,
+        user_id as customer_id,
+        order_date,
+        status
+
+    from dbt-tutorial.jaffle_shop.orders
+
+),
+
+select * from orders
+```
+
+We can now refactor `models/dim_customers.sql` to use the above two files:
+
+```sql
+--models/dim_customers.sql
+{{
+    config(
+        materialized='table'
+    )
+}}
+
+with customers as (
+    select *from {{ ref('stg_customers') }}
+),
+
+orders as (
+    select * from {{ ref('stg_orders') }}
+),
+...
+```
+
+Now if we run `dbt run`, we will see that it creates the `stg_customers` and `stg_orders` views and then creates the `dim_customers` table.
+
+![](notes_imgs/2023-07-17-09-09-50.png)
+
+If you look at the lineage view in the dbt cloud, you will see that `dim_customers` depends on `stg_customers` and `stg_orders`:
+
+![](notes_imgs/2023-07-17-09-13-55.png)
+
